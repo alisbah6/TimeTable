@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h1,h2{
+    background-color: lightgreen;
+    text-align: center;
+}
+.nav-item{
+    display: flex;
+    margin-top:30px;
+    justify-content: space-around;
+    align-items: center ;
+    padding: 10px; ;
+    box-shadow: 5px 5px 15px 15px grey;
+    width: 100%;
+    height: 80px;
+    background-color: rgb(255, 255, 255);
+    font-size: x-large;
+    text-decoration: none;
+    color: black;
+
+}
