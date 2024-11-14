@@ -3,22 +3,35 @@
     padding: 0;
     box-sizing: border-box;
 }
-h1,h2{
+.heading1,.heading2{
     background-color: lightgreen;
     text-align: center;
 }
-.nav-item{
-    display: flex;
-    margin-top:30px;
-    justify-content: space-around;
-    align-items: center ;
-    padding: 10px; ;
-    box-shadow: 5px 5px 15px 15px grey;
-    width: 100%;
-    height: 80px;
-    background-color: rgb(255, 255, 255);
-    font-size: x-large;
-    text-decoration: none;
-    color: black;
-
+.heading3{
+    text-align: center;
+    margin: 30px;
 }
+.Allclasses {
+    align-items: center; /* Center vertically */
+    margin-left: 42%;
+
+  }
+.class-card {
+    width: 250px;
+    padding: 20px;
+    margin: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px grey;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+  }
+  
+  .class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px black;
+  }
+  
+  .class-title{
+    font-size:x-large;
+  }

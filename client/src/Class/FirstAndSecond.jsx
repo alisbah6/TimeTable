@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-// import './Teacher.css';
+import './Classes.css';
 
-const Teacher = () => {
-  const classOptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-  const sectionOptions = ['A', 'B', 'C', 'D', 'E', 'F'];
+const FirstAndSecond = () => {
+  const classOptions = ['I','II'];
+  const sectionOptions = ['A', 'B', 'C','D'];
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  const periods = Array.from({ length: 8 }, (_, i) => `${i + 1}`);
+  const periods = Array.from({ length: 7 }, (_, i) => `${i + 1}`);
 
+  const [classTeacher,setClassTeacher]=useState(' ');
+  const [selectedClass0, setSelectedClass0] = useState('');
   const [selectedClass1, setSelectedClass1] = useState('');
   const [selectedClass2, setSelectedClass2] = useState('');
-  const [selectedClass3, setSelectedClass3] = useState('');
+  const [selectedSection0, setSelectedSection0] = useState('');
   const [selectedSection1, setSelectedSection1] = useState('');
   const [selectedSection2, setSelectedSection2] = useState('');
-  const [selectedSection3, setSelectedSection3] = useState('');
   const [selectedSection4, setSelectedSection4] = useState('');
   const [selectedSection5, setSelectedSection5] = useState('');
   const [selectedSection6, setSelectedSection6] = useState('');
-  const [selectedSection7, setSelectedSection7] = useState('');
-  const [selectedSection8, setSelectedSection8] = useState('');
-  const [selectedSection9, setSelectedSection9] = useState('');
   const [showTable, setShowTable] = useState(false);
 
   const handleGenerate = (e) => {
@@ -34,7 +32,6 @@ const Teacher = () => {
     if (selectedClass1) {
       if (selectedSection1) selectedClassesSections.push(`${selectedClass1}${selectedSection1}`);
       if (selectedSection2) selectedClassesSections.push(`${selectedClass1}${selectedSection2}`);
-      if (selectedSection3) selectedClassesSections.push(`${selectedClass1}${selectedSection3}`);
     }
   
     if (selectedClass2) {
@@ -43,16 +40,10 @@ const Teacher = () => {
       if (selectedSection6) selectedClassesSections.push(`${selectedClass2}${selectedSection6}`);
     }
   
-    if (selectedClass3) {
-      if (selectedSection7) selectedClassesSections.push(`${selectedClass3}${selectedSection7}`);
-      if (selectedSection8) selectedClassesSections.push(`${selectedClass3}${selectedSection8}`);
-      if (selectedSection9) selectedClassesSections.push(`${selectedClass3}${selectedSection9}`);
-    }
   
-    // If there are no valid combinations, return an empty string for a blank
-    if (selectedClassesSections.length === 0) {
-      return ""; // Leave it blank if no combination is available
-    }
+    // if (selectedClassesSections.length === 0) {
+    //   return ""; // Leave it blank if no combination is available
+    // }
   
     // Randomly select a class-section combination
     const randomIndex = Math.floor(Math.random() * selectedClassesSections.length);
@@ -63,6 +54,39 @@ const Teacher = () => {
     <div>
       <h1 className="heading">Teachers Time Table</h1>
       <form className="teacher-form" onSubmit={handleGenerate}>
+        <label className="classes">Teacher's Name</label>
+        <input onChange={(e) => setClassTeacher(e.target.value)} /> 
+        <div className="first">
+          <h2>Class Teacher Of</h2>
+          <div className="class-section">
+            <label className="classes">Class</label>
+            <select
+              className="class-options"
+              value={selectedClass0}
+              onChange={(e) => setSelectedClass0(e.target.value)}
+            >
+              <option value="">Select Class</option>
+              {classOptions.map((classItem) => (
+                <option key={classItem} value={classItem}>
+                  {classItem}
+                </option>
+              ))}
+            </select>
+            <label className="classes">Section</label>
+            <select
+              className="class-options"
+              value={selectedSection0}
+              onChange={(e) => setSelectedSection0(e.target.value)}
+            >
+              <option value="">Select Section</option>
+              {sectionOptions.map((sectionItem) => (
+                <option key={sectionItem} value={sectionItem}>
+                  {sectionItem}
+                </option>
+              ))}
+            </select>
+            </div>
+            </div>
         <div className="first">
           <div className="class-section">
             <label className="classes">Class</label>
@@ -96,19 +120,6 @@ const Teacher = () => {
               className="class-options"
               value={selectedSection2}
               onChange={(e) => setSelectedSection2(e.target.value)}
-            >
-              <option value="">Select Section</option>
-              {sectionOptions.map((sectionItem) => (
-                <option key={sectionItem} value={sectionItem}>
-                  {sectionItem}
-                </option>
-              ))}
-            </select>
-            <label className="classes">Section</label>
-            <select
-              className="class-options"
-              value={selectedSection3}
-              onChange={(e) => setSelectedSection3(e.target.value)}
             >
               <option value="">Select Section</option>
               {sectionOptions.map((sectionItem) => (
@@ -175,106 +186,60 @@ const Teacher = () => {
             </select>
           </div>
         </div>
-        <div className="first">
-          <div className="class-section">
-            <label className="classes">Class</label>
-            <select
-              className="class-options"
-              value={selectedClass3}
-              onChange={(e) => setSelectedClass3(e.target.value)}
-            >
-              <option value="">Select Class</option>
-              {classOptions.map((classItem) => (
-                <option key={classItem} value={classItem}>
-                  {classItem}
-                </option>
-              ))}
-            </select>
-            <label className="classes">Section</label>
-            <select
-              className="class-options"
-              value={selectedSection7}
-              onChange={(e) => setSelectedSection7(e.target.value)}
-            >
-              <option value="">Select Section</option>
-              {sectionOptions.map((sectionItem) => (
-                <option key={sectionItem} value={sectionItem}>
-                  {sectionItem}
-                </option>
-              ))}
-            </select>
-            <label className="classes">Section</label>
-            <select
-              className="class-options"
-              value={selectedSection8}
-              onChange={(e) => setSelectedSection8(e.target.value)}
-            >
-              <option value="">Select Section</option>
-              {sectionOptions.map((sectionItem) => (
-                <option key={sectionItem} value={sectionItem}>
-                  {sectionItem}
-                </option>
-              ))}
-            </select>
-            <label className="classes">Section</label>
-            <select
-              className="class-options"
-              value={selectedSection9}
-              onChange={(e) => setSelectedSection9(e.target.value)}
-            >
-              <option value="">Select Section</option>
-              {sectionOptions.map((sectionItem) => (
-                <option key={sectionItem} value={sectionItem}>
-                  {sectionItem}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+       
         <button className="generate-btn" type="submit">
           Generate
         </button>
       </form>
 
       {showTable && (
-  <table className="timetable">
-    <thead>
-      <tr>
-        <th>Day</th>
-        {periods.map((period) => (
-          <th key={period}>{period}</th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {weekdays.map((day) => {
-        // Step 1: Randomly select periods to be empty (either 1 or 2 periods)
-        const emptyPeriods = new Set();
-        const periodsToLeaveEmpty = Math.random() < 0.5 ? 2 : 1; // Randomly decide if 1 or 2 periods should be empty
+        <table className="timetable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              {periods.map((period) => <th key={period}>{period}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {weekdays.map((day) => {
+              const classTeacherClassSection = `${selectedClass0}${selectedSection0}`;
+              const emptyPeriods = new Set();
 
-        while (emptyPeriods.size < periodsToLeaveEmpty) {
-          const randomIndex = Math.floor(Math.random() * periods.length);
-          emptyPeriods.add(randomIndex); // Ensure unique periods are chosen to be empty
-        }
+              if (day === 'Friday') {
+                // Friday-specific logic
+                const randomEmptyPeriod = Math.floor(Math.random() * 4) + 1; // Randomly select a period between 2-5 (index 1-4)
+                emptyPeriods.add(randomEmptyPeriod);
+                emptyPeriods.add(periods.length - 1); // Ensure the last period is empty
+              } else {
+                // Logic for other days
+                const periodsToLeaveEmpty = Math.random() < 0.5 ? 2 : 1;
+                while (emptyPeriods.size < periodsToLeaveEmpty) {
+                  const randomIndex = Math.floor(Math.random() * (periods.length - 1)) + 1; // Avoid the first period
+                  emptyPeriods.add(randomIndex);
+                }
+              }
 
-        return (
-          <tr key={day}>
-            <td>{day}</td>
-            {periods.map((_, index) => (
-              <td key={index}>
-                {/* Step 2: If the current period is in the emptyPeriods set, leave it blank */}
-                {emptyPeriods.has(index) ? "" : getRandomClassSection()}
-              </td>
-            ))}
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
-)}
+              return (
+                <tr key={day}>
+                  <td>{day}</td>
+                  {periods.map((_, index) => (
+                    <td key={index}>
+                      {index === 0
+                        ? classTeacherClassSection // First period set to class teacher's class-section
+                        : emptyPeriods.has(index)
+                        ? ""
+                        : getRandomClassSection()}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
 
     </div>
   );
 };
 
-export default Teacher;
+export default FirstAndSecond;

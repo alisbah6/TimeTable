@@ -1,21 +1,13 @@
-/* General page styling */
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f4f6f8;
-    margin: 0;
-  }
+
   
-  div {
+.first {
     width: 100%;
     max-width: 800px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: center;
   }
   
   /* Heading styling */
@@ -33,6 +25,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin-left: 27%;
+    margin-right: 27%;
   }
   
   /* Label styling */
@@ -46,7 +40,6 @@ body {
   /* Select dropdown styling */
   .class-options {
     width: 100%;
-    padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;

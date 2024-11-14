@@ -1,18 +1,64 @@
-import React from 'react'
-import {  NavLink } from 'react-router-dom'
-import './Home.css'
+// Home.js
+import React from "react";
+import "./Home.css";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const classes = [
+    "Nursery & Kg",
+    "I & II",
+    "III to V",
+    "VI",
+    "VII-VIII",
+    "IX-X",
+    "XI-XII",
+  ];
+
+  const handleCardClick = (classItem) => {
+    if (classItem === "Nursery & Kg") {
+      navigate("/NurAndKg");
+    }
+     else if (classItem === "I & II") {
+      navigate("/FirstAndSecond");
+    }
+    else if (classItem === "III to V") {
+      navigate("/ThirdToFifth");
+    }
+    else if (classItem === "VI") {
+      navigate("/Six");
+    }
+    else if (classItem === "VII-VIII") {
+      navigate("/SevenAndEight");
+    }
+    else if (classItem === "IX-X") {
+      navigate("/NineAndTen");
+    }
+    else if (classItem === "XI-XII") {
+      navigate("/ElevenAndTwelve");
+    }
+
+  };
+
   return (
     <div>
-        <h1>Shaheen Bagh School</h1>
-        <h2>Time Table Generator</h2>
-        <nav>
-        <NavLink className="nav-item" to="/Teacher">Teacher</NavLink>
-        <NavLink className="nav-item" to="/Class">Class</NavLink>
-        </nav>
+      <h1 className="heading1">Shaheen Bagh School</h1>
+      <h2 className="heading2">Time Table Generator</h2>
+      <h1 className="heading3">Select Class</h1>
+      <div className="Allclasses">
+        {classes.map((classItem) => (
+          <div
+            className="class-card"
+            key={classItem}
+            data-value={classItem}
+            onClick={() => handleCardClick(classItem)} // Pass classItem here
+          >
+            <p className="class-title">{classItem}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
