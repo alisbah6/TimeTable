@@ -2,7 +2,9 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Home from './Home/Home';
 import Teacher from './Teacher/Teacher';
-import NurAndKg from './Class/NurAndKg';
+import NurseryA from './Class/NurseryA';
+import NurseryB from './Class/NurseryB';
+import KgA from './Class/KgA';
 import FirstAndSecond from './Class/FirstAndSecond';
 import ThirdToFifth from './Class/ThirdToFifth';
 import Six from './Class/Six';
@@ -15,7 +17,9 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/Teacher" element={<Teacher />} />
-        <Route path="/NurAndKg" element={<NurAndKg />} />
+        <Route path="/NurseryA" element={<NurseryA />} />
+        <Route path="/NurseryB" element={<NurseryB />} />
+        <Route path="/KgA" element={<KgA />} />
         <Route path="/FirstAndSecond" element={<FirstAndSecond />} />
         <Route path="/ThirdToFifth" element={<ThirdToFifth />} />
         <Route path="/Six" element={<Six />} />

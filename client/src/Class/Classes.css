@@ -67,24 +67,92 @@
   .generate-btn:hover {
     background-color: #0056b3;
   }
+/* General table styling */
+.timetable {
+  width: 100%;
+  table-layout: fixed; /* Ensures fixed column widths */
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header */
+.timetable th {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  width: calc(100% / 7); /* Distribute width equally for 7 columns */
+  word-wrap: break-word; /* Wrap text if it's too long */
+}
+
+/* Table rows */
+.timetable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Wrap text if it's too long */
+}
+
+/* Alternating row colors */
+.timetable tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.timetable tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Highlight hovered row */
+.timetable tbody tr:hover {
+  background-color: #e0f7fa;
+}
+
+/* Add space between buttons and tables */
+h2 {
+  margin-top: 30px;
+  color: #333;
+  text-align: center;
+}
+
+/* Styling for headings */
+.heading {
+  text-align: center;
+  color: #4CAF50;
+  font-family: 'Arial', sans-serif;
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+/* Button styling */
+.generate-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-btn:hover {
+  background-color: #45a049;
+}
+
+/* Responsive table for smaller screens */
+@media (max-width: 768px) {
   .timetable {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
+    font-size: 14px;
   }
-  
-  .timetable th, .timetable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
+
+  .generate-btn {
+    width: 90%;
   }
-  
-  .timetable th {
-    background-color: #f2f2f2;
-    color: #333;
-  }
-  
-  .timetable tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
+}
+

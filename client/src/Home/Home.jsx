@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const navigate = useNavigate();
   const classes = [
-    "Nursery & Kg",
+    "Nursery",
+    "Kg",
     "I & II",
     "III to V",
     "VI",
@@ -16,8 +17,11 @@ const Home = () => {
   ];
 
   const handleCardClick = (classItem) => {
-    if (classItem === "Nursery & Kg") {
-      navigate("/NurAndKg");
+    if (classItem === "Nursery") {
+      navigate("/NurseryA");
+    }
+    else if(classItem==="Kg"){
+      navigate("/Kg");
     }
      else if (classItem === "I & II") {
       navigate("/FirstAndSecond");
@@ -43,7 +47,7 @@ const Home = () => {
   return (
     <div>
       <h1 className="heading1">Shaheen Bagh School</h1>
-      <h2 className="heading2">Time Table Generator</h2>
+      <button className="teacher-btn" onClick={()=>navigate("/Teacher")}>Teacher</button>
       <h1 className="heading3">Select Class</h1>
       <div className="Allclasses">
         {classes.map((classItem) => (

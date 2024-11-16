@@ -4,7 +4,6 @@ const URL = "mongodb+srv://alisbahhina:hbg6dlFbB0zPlbkB@cluster0.jhb0o.mongodb.n
 async function connectDb() {
 
         return mongoose.connect(URL);
-        console.log("connected to database");
 
 }
 
