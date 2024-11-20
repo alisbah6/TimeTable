@@ -1,18 +1,43 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Teacher.css";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import './Teacher.css';
 
-const Teacher = () => {
-  // State to store form input values
+const TeacherEdit = () => {
   const [teacherData, setTeacherData] = useState({
-    name: "",
-    type: "",
-    level: "",
-    teacherclass: "",
+    name: '',
+    type: '',
+    level: '',
+    teacherclass: '',
     subject: [],
   });
+  
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Handle change for each input field
+  const { id } = useParams(); // Extract the :id parameter from the route
+
+  useEffect(() => {
+    const fetchTeacher = async () => {
+      try {
+        const response = await fetch(`http://localhost:3200/teacher/${id}`); 
+        if (!response.ok) {
+          throw new Error("Failed to fetch teacher data");
+        }
+        const data = await response.json();
+        setTeacherData(data);
+      } catch (error) {
+        console.error("Error fetching teacher data:", error);
+      }
+      finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeacher();
+  }, [id]);
+
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTeacherData((prevData) => ({
@@ -20,59 +45,50 @@ const Teacher = () => {
       [name]: value,
     }));
   };
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3200/teacher/edit/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(teacherData),
+      });
 
-  // Handle change for subjects input (comma-separated values)
+      if (!response.ok) {
+        throw new Error("Failed to update teacher");
+      }
+
+      const updatedData = await response.json();
+      console.log("Updated teacher:", updatedData);
+
+      // Navigate back to the list or confirmation page
+      navigate("/AllTeacher"); // Adjust the path as needed
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (!teacherData) return <p>Teacher not found</p>;
+
+
+  // Handle change for subjects (comma-separated values)
   const handleSubjectsChange = (e) => {
     const value = e.target.value;
-    const subjectsArray = value.split(",").map((subject) => subject.trim());
+    const subjectsArray = value.split(',').map((subject) => subject.trim());
     setTeacherData((prevData) => ({
       ...prevData,
       subject: subjectsArray,
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Teacher Data Submitted:", teacherData);
-
-    try {
-      const response = await fetch("http://localhost:3200/teacher/newteacher", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(teacherData), // Send form data as JSON
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Response from server:", data);
-
-      // Clear the form on successful submission
-      setTeacherData({
-        name: "",
-        type: "",
-        level: "",
-        teacherclass: "",
-        subject: [],
-      });
-
-      alert("Teacher data submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting teacher data:", error);
-      alert("Failed to submit teacher data. Please try again.");
-    }
-  };
-
+ 
   return (
     <div className="teacher-form-container">
-      <Link to="/">Home</Link>
-      <h1 className="teacher-form-heading">Teacher's Information Form</h1>
-      <form onSubmit={handleSubmit} className="teacher-form">
+      <h1 className="teacher-form-heading">Edit Teacher Information</h1>
+      <form onSubmit={handleFormSubmit} className="teacher-form">
         <div>
           <label htmlFor="name">Name:</label>
           <input
@@ -85,7 +101,6 @@ const Teacher = () => {
           />
         </div>
 
-        {/* Type of Teacher (Class Teacher or Subject Teacher) */}
         <div>
           <label htmlFor="type">Type:</label>
           <select
@@ -100,6 +115,7 @@ const Teacher = () => {
             <option value="Subject Teacher">Subject Teacher</option>
           </select>
         </div>
+
         <div>
           <label htmlFor="level">Level:</label>
           <select
@@ -111,10 +127,11 @@ const Teacher = () => {
           >
             <option value="">Select Level</option>
             <option value="PRT">PRT</option>
-            <option value="TGT">TGT</option>
             <option value="PGT">PGT</option>
+            <option value="TGT">TGT</option>
           </select>
         </div>
+
         <div>
           <label htmlFor="teacherclass">Class:</label>
           <select
@@ -125,6 +142,7 @@ const Teacher = () => {
             required
           >
             <option value="">Select Class</option>
+            {/* Add options dynamically as per your classes */}
             <option value="Nursery">Nursery</option>
             <option value="Kg">Kg</option>
             <option value="1">1</option>
@@ -148,16 +166,17 @@ const Teacher = () => {
             type="text"
             id="subject"
             name="subject"
-            value={teacherData.subject.join(", ")} // Join array for display
+            value={teacherData.subject.join(', ')} // Display subjects as a comma-separated string
             onChange={handleSubjectsChange}
             placeholder="Enter subjects separated by commas"
             required
           />
         </div>
-        <button type="submit">Submit</button>
+
+        <button type="submit">Save Changes</button>
       </form>
     </div>
   );
 };
 
-export default Teacher;
+export default TeacherEdit;

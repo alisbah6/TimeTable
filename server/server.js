@@ -7,6 +7,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const connectDB = require("./connect");
+const teacherRoutes = require('./routes/teacherRoutes'); // Adjust the path
+app.use('/teacher', teacherRoutes);
 
 const PORT = 3200;
 

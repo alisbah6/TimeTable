@@ -21,7 +21,7 @@ const Home = () => {
       navigate("/NurseryA");
     }
     else if(classItem==="Kg"){
-      navigate("/Kg");
+      navigate("/KgA");
     }
      else if (classItem === "I & II") {
       navigate("/FirstAndSecond");
@@ -47,7 +47,7 @@ const Home = () => {
   return (
     <div>
       <h1 className="heading1">Shaheen Bagh School</h1>
-      <button className="teacher-btn" onClick={()=>navigate("/Teacher")}>Teacher</button>
+      <button className="teacher-btn" onClick={()=>navigate("/AllTeacher")}>Teacher</button>
       <h1 className="heading3">Select Class</h1>
       <div className="Allclasses">
         {classes.map((classItem) => (

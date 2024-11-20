@@ -11,12 +11,12 @@ const NurseryB = () => {
 
   const subjectOptions = [
     { name: "English", count: 5 },
-    { name: "Hindi", count: 3 },
     { name: "Maths", count: 5 },
-    { name: "EVS", count: 2 },
     { name: "Draw", count: 3 },
     { name: "Play", count: 4 },
     { name: "IS", count: 1 },
+    { name: "EVS", count: 2 },
+    { name: "Hindi", count: 3 },
     { name: "Games", count: 1 },
     { name: "Urdu", count: 3 },
     { name: "Dic", count: 1 },
@@ -24,100 +24,150 @@ const NurseryB = () => {
   ];
 
   const [timetableData, setTimetableData] = useState(initialTimetableData);
-
   const handleGenerate = () => {
     const subjectCounts = subjectOptions.reduce((acc, { name, count }) => {
       acc[name] = count;
       return acc;
     }, {});
-
-    const newTimetable = timetableData.map((daySchedule, dayIndex) =>
-      daySchedule.map((subject, periodIndex) => {
-        // Preserve filled cells
+  
+    const newTimetable = timetableData.map((daySchedule, dayIndex) => {
+      const usedSubjects = new Set(); // To track subjects used on the current day
+  
+      return daySchedule.map((subject, periodIndex) => {
+        // Preserve already filled cells
         if (subject) {
           if (subjectCounts[subject] !== undefined) {
             subjectCounts[subject]--; // Deduct count for existing subjects
           }
+          usedSubjects.add(subject); // Mark subject as used for the day
           return subject;
         }
-
-
+  
         // Filter subjects based on remaining counts and restrictions
-        const availableSubjects = Object.entries(subjectCounts)
-          .filter(([name, count]) => count > 0)
+        let availableSubjects = Object.entries(subjectCounts)
+          .filter(([name, count]) => count > 0) // Only subjects with remaining counts
           .filter(([name]) =>
-            periodIndex === 0 || periodIndex === periods.length - 1 // Restrict Draw, Play, Games for first/last periods
-              ? !["Draw", "Play", "Games"].includes(name)
+            periodIndex === 0 || periodIndex === periods.length - 1
+              ? !["Draw", "Play", "Games"].includes(name) // Restrict Draw, Play, Games for first/last periods
               : true
           )
           .map(([name]) => name);
-
+  
+        // Remove subjects with count less than 4 if they have already been used on the same day
+        availableSubjects = availableSubjects.filter((subject) => {
+          const subjectCount = subjectCounts[subject];
+          if (subjectCount < 4 && usedSubjects.has(subject)) {
+            return false; // Exclude subjects with count less than 4 that have been used
+          }
+          return true;
+        });
+  
         let selectedSubject = "";
+  
+        // Try to select a subject that is not the same as the previous one (no consecutive subjects)
         while (availableSubjects.length > 0) {
-          const randomIndex = Math.floor(
-            Math.random() * availableSubjects.length
-          );
+          const randomIndex = Math.floor(Math.random() * availableSubjects.length);
           const candidateSubject = availableSubjects[randomIndex];
-
-          // Ensure no consecutive same subjects
+  
+          // Ensure no consecutive subjects (don't pick the same subject as the previous period)
           if (
-            periodIndex === 0 ||
+            periodIndex === 0 || // Skip check for the first period
             candidateSubject !== daySchedule[periodIndex - 1]
           ) {
             selectedSubject = candidateSubject;
-            subjectCounts[selectedSubject]--;
+            subjectCounts[selectedSubject]--; // Decrease the count for the selected subject
+            usedSubjects.add(selectedSubject); // Mark subject as used for the day
             break;
           }
-
-          // Remove invalid subject
+  
+          // Remove invalid subject and retry
           availableSubjects.splice(randomIndex, 1);
         }
-
+  
+        // If no valid subject was found, select the one with the least remaining count, ensuring no consecutive subjects
+        if (!selectedSubject) {
+          console.warn(`Fallback: No valid subject found for Day: ${weekdays[dayIndex]}, Period: ${periodIndex + 1}`);
+  
+          // Find the subject with the least count remaining that is not the same as the previous one
+          const leastCountSubject = Object.entries(subjectCounts)
+            .filter(([name]) => 
+              periodIndex === 0 || name !== daySchedule[periodIndex - 1] // Ensure no consecutive subjects
+            )
+            .reduce((minSubject, [name, count]) => {
+              if (count < minSubject.count) {
+                return { name, count };
+              }
+              return minSubject;
+            }, { name: "", count: Infinity }); // Initialize with an infinite count
+  
+          selectedSubject = leastCountSubject.name; // Select the subject with the least remaining count
+          subjectCounts[selectedSubject]--; // Deduct count for the selected subject
+          usedSubjects.add(selectedSubject); // Mark subject as used for the day
+        }
+  
         return selectedSubject;
-      })
-    );
-    const quranPositions = JSON.parse(localStorage.getItem("quranPositions"));
-
-// Initialize an array to hold the subjects (excluding Quran) at those positions
-const otherSubjects = [];
-
-// Iterate over the Quran positions and get other subjects
-quranPositions.forEach(({ row, col }) => {
-  const subjectAtPosition = timetableData[row][col];
-  // If the subject is not "Quran", add it to the otherSubjects array
-  if (subjectAtPosition !== "Quran") {
-    otherSubjects.push(subjectAtPosition);
-  }
-});
-
+      });
+    });
+  
     setTimetableData(newTimetable);
-  }; 
-  
-  
-  const handleRegenerate = () => {
-    window.location.reload();
   };
-
+  
+  
   const generateQuranTimetable = () => {
-    return timetableData.map((daySchedule) =>
+    // Get quran positions from localStorage
+    const NurAquran = JSON.parse(localStorage.getItem("NurAquran")) || [];
+  
+    // Create a copy of the timetable with all cells empty
+    const timetableCopy = timetableData.map((daySchedule) =>
       daySchedule.map((subject) => (subject === "Quran" ? "Quran" : ""))
     );
+  
+    // Set "Quran" in the positions stored in quranPositions
+    NurAquran.forEach(({ row, col }) => {
+      if (timetableCopy[row] && timetableCopy[row][col] !== undefined) {
+        timetableCopy[row][col] = "Quran"; // Set "Quran" at the correct position
+      }
+    });
+  
+    return timetableCopy;
   };
-
+  
   const quranTimetable = generateQuranTimetable();
 
+  const sharequranposition = () => {
+    // Generate the timetable with Quran
+    const updatedTimetable = generateQuranTimetable();
+  
+    // Capture the positions of "Quran" in the updated timetable
+    const QuranPositions = [];
+    updatedTimetable.forEach((row, rowIndex) => {
+      row.forEach((subject, colIndex) => {
+        if (subject === "Quran") {
+          QuranPositions.push({ row: rowIndex, col: colIndex });
+        }
+      });
+    });
+  
+    // Store the Quran positions in localStorage (only the row, col data)
+    localStorage.setItem("UpdatedTimetable", JSON.stringify(QuranPositions));
+  
+    // Optionally, update the state to reflect the updated timetable
+    setTimetableData(updatedTimetable);
+  
+    // Navigate to the next page
+    navigate("/");
+  };
+  
   return (
     <div>
       <h1 className="heading">NurseryB Time Table</h1>
-      <button className="generate-btn" onClick={() => navigate("/")}>
+      <button className="generate-btn" onClick={sharequranposition}>
         Home
       </button>
       <button className="generate-btn" onClick={handleGenerate}>
         Generate
       </button>
-      <button className="generate-btn" onClick={handleRegenerate}>
-        Reload
-      </button>
+  
       {timetableData.length > 0 ? (
         <>
           <h2>Class Teacher Time Table</h2>

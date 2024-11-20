@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Classes.css";
 
-const KgA = () => {
+const KgB = () => {
   const navigate = useNavigate();
   const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const periods = Array.from({ length: 6 }, (_, i) => `${i + 1}`);
@@ -102,7 +102,7 @@ const KgA = () => {
   
 
   const generateQuranTimetable = (generatedTimetable) => {
-    const quranposition = JSON.parse(localStorage.getItem("UpdatedTimetable")) || [];
+    const quranposition = JSON.parse(localStorage.getItem("KgA")) || [];
 
     const timetableCopy = generatedTimetable.map((daySchedule) =>
       daySchedule.map((subject) => (subject === "Quran" ? "Quran" : ""))
@@ -134,14 +134,13 @@ const KgA = () => {
 
   return (
     <div>
-      <h1 className="heading">KgA Time Table</h1>
+      <h1 className="heading">Kg B Time Table</h1>
       <button className="generate-btn" onClick={()=>{navigate('/')}}>
         Home
       </button>
       <button className="generate-btn" onClick={handleGenerate}>
         Generate
       </button>
-      <button className="generate-btn" onClick={()=>{navigate('/KgB')}}>Kg B</button>
 
       {showTable && (
         <>
@@ -198,4 +197,4 @@ const KgA = () => {
   );
 };
 
-export default KgA;
+export default KgB;
